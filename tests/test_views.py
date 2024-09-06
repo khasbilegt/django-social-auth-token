@@ -39,7 +39,7 @@ def test_invalid_client_id(client_type, grant_type, client, user, data, monkeypa
 
     response = client.post(
         reverse("social_oauth_token:token", kwargs={"backend": "apple-id"}),
-        data={**data, "client_id": client_id(client_type, grant_type)},
+        data={**data, "oauth_client_id": client_id(client_type, grant_type)},
     )
     assert response.status_code == 400
     assert "message" in response.json()
@@ -51,13 +51,13 @@ def test_invalid_client_id(client_type, grant_type, client, user, data, monkeypa
         None,
         {"code": ""},
         {"token": ""},
-        {"client_id": ""},
-        {"code": "", "client_id": ""},
-        {"token": "", "client_id": ""},
-        {"code": "ldfjsk", "client_id": ""},
-        {"token": "ldfjsk", "client_id": ""},
-        {"code": "", "client_id": "sldfkjldkfj"},
-        {"token": "", "client_id": "sldfkjldkfj"},
+        {"oauth_client_id": ""},
+        {"code": "", "oauth_client_id": ""},
+        {"token": "", "oauth_client_id": ""},
+        {"code": "ldfjsk", "oauth_client_id": ""},
+        {"token": "ldfjsk", "oauth_client_id": ""},
+        {"code": "", "oauth_client_id": "sldfkjldkfj"},
+        {"token": "", "oauth_client_id": "sldfkjldkfj"},
     ),
 )
 def test_invalid_request_body(data, client):
@@ -75,7 +75,8 @@ def test_view(client, user, monkeypatch, data):
     )
 
     res = client.post(
-        reverse("social_oauth_token:token", kwargs={"backend": "apple-id"}), data={**data, "client_id": client_id()}
+        reverse("social_oauth_token:token", kwargs={"backend": "apple-id"}),
+        data={**data, "oauth_client_id": client_id()},
     )
 
     assert res.status_code == 200
@@ -105,7 +106,7 @@ def test_view_auth_exception(client, data, monkeypatch):
     assert (
         client.post(
             reverse("social_oauth_token:token", kwargs={"backend": "apple-id"}),
-            data={**data, "client_id": client_id()},
+            data={**data, "oauth_client_id": client_id()},
         ).status_code
         == 400
     )

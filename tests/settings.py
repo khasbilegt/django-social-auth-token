@@ -52,3 +52,5 @@ AUTHENTICATION_BACKENDS = (
     "oauth2_provider.backends.OAuth2Backend",
     "social_core.backends.apple.AppleIdAuth",
 )
+
+USE_TZ = True
