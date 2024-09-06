@@ -68,7 +68,8 @@ def test_invalid_request_body(data, client):
 
 @pytest.mark.django_db
 @pytest.mark.parametrize("data", [{"token": "access_token"}, {"code": "auth_code"}])
-def test_view(client, user, monkeypatch, data):
+@pytest.mark.parametrize("key", ["oauth_client_id", "client_id"])
+def test_view(client, user, key, monkeypatch, data):
     monkeypatch.setattr(
         "social_django.utils.load_backend",
         mock.Mock(**{"return_value.complete.return_value": user, "return_value.do_auth.return_value": user}),
@@ -76,7 +77,7 @@ def test_view(client, user, monkeypatch, data):
 
     res = client.post(
         reverse("social_oauth_token:token", kwargs={"backend": "apple-id"}),
-        data={**data, "oauth_client_id": client_id()},
+        data={**data, key: client_id()},
     )
 
     assert res.status_code == 200
@@ -93,7 +94,8 @@ def test_view(client, user, monkeypatch, data):
 
 @pytest.mark.django_db
 @pytest.mark.parametrize("data", [{"token": "access_token"}, {"code": "auth_code"}])
-def test_view_auth_exception(client, data, monkeypatch):
+@pytest.mark.parametrize("key", ["oauth_client_id", "client_id"])
+def test_view_auth_exception(client, data, key, monkeypatch):
     monkeypatch.setattr(
         "social_django.utils.load_backend",
         mock.Mock(
@@ -106,7 +108,7 @@ def test_view_auth_exception(client, data, monkeypatch):
     assert (
         client.post(
             reverse("social_oauth_token:token", kwargs={"backend": "apple-id"}),
-            data={**data, "oauth_client_id": client_id()},
+            data={**data, key: client_id()},
         ).status_code
         == 400
     )
