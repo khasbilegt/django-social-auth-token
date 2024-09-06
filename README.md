@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/khasbilegt/django-social-oauth-token/">
-    <img src="https://img.shields.io/github/workflow/status/khasbilegt/django-social-oauth-token/CI?label=CI&logo=github&style=for-the-badge" alt="ci status">
+    <img src="https://img.shields.io/github/actions/workflow/status/khasbilegt/django-social-oauth-token/ci.yml?label=CI&logo=github&style=for-the-badge" alt="ci status">
   </a>
   <a href="https://pypi.org/project/django-social-oauth-token/">
     <img src="https://img.shields.io/pypi/v/django-social-oauth-token?style=for-the-badge" alt="pypi link">
@@ -67,12 +67,12 @@ urlpatterns = [
 
 ## How To Use
 
-In order to verify the **Authorization Code** sent by the user and replace it with your own **OAuth Access Token**, send a **POST** request to the `token/<backend>/` endpoint with `client_id` and `code` to receive the token.
+In order to verify the **Authorization Code** sent by the user and replace it with your own **OAuth Access Token**, send a **POST** request to the `token/<backend>/` endpoint with `oauth_client_id` and `code` to receive the token.
 
 The POST request parameters:
 
 ```Python
-client_id # OAuth Client ID
+oauth_client_id # OAuth Client ID
 code # Authorization Code
 ```
 
