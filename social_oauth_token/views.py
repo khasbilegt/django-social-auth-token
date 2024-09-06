@@ -51,7 +51,7 @@ def create_access_token(user_id, client_id: str, expires: int = EXPIRE_SECONDS):
 @psa()
 def social_auth_token_exchange_view(request, backend, *args, **kwargs):
     try:
-        if client_id := request.POST.get("client_id"):
+        if client_id := request.POST.get("oauth_client_id"):
             if token := request.POST.get("token"):
                 user = request.backend.do_auth(token)
             else:
@@ -60,6 +60,6 @@ def social_auth_token_exchange_view(request, backend, *args, **kwargs):
 
                 user = request.backend.complete()
             return create_access_token(user.pk, client_id)
-        raise BadRequest("Please provide client_id")
+        raise BadRequest("Please provide oauth_client_id")
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=400)
